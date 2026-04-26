@@ -3,65 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CaptionAI - Instant Instagram Captions</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Caption Genius</title>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
-        textarea, input, select { border-radius: 0.375rem; border: 1px solid #d1d5db; padding: 0.75rem; width: 100%; margin-bottom: 1rem; }
-        button { background-color: #4f46e5; color: white; padding: 0.75rem 1.5rem; border-radius: 0.375rem; cursor: pointer; transition: background-color 0.2s; }
-        button:hover { background-color: #4338ca; }
-        #captionOutput { min-height: 120px; background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.375rem; word-wrap: break-word; }
-        .price-box { background-color: #eff6ff; border: 1px solid #dbeafe; padding: 1rem; border-radius: 0.5rem; text-align: center; margin-top: 2rem; }
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .container { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 500px; width: 90%; text-align: center; }
+        h1 { color: #333; margin-bottom: 20px; }
+        textarea { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; min-height: 80px; }
+        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease; }
+        button:hover { background-color: #45a049; }
+        #captionOutput { margin-top: 20px; padding: 15px; background-color: #e9ecef; border-radius: 4px; text-align: left; white-space: pre-wrap; word-wrap: break-word; min-height: 50px; display: none; }
+        .loading { display: none; margin-top: 15px; color: #555; }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body>
     <div class="container">
-        <h1 class="text-4xl font-bold text-center mb-6">CaptionAI ✨</h1>
-        <p class="text-center text-lg mb-8 text-gray-600">Craft perfect Instagram captions in an instant.</p>
-        
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <label for="keywords" class="block text-sm font-medium text-gray-700 mb-2">Keywords/Emojis (e.g., "sunset, beach, 🌅, relax")</label>
-            <input type="text" id="keywords" placeholder="Enter keywords and emojis" class="focus:ring-indigo-500 focus:border-indigo-500">
-            
-            <label for="tone" class="block text-sm font-medium text-gray-700 mb-2">Desired Tone</label>
-            <select id="tone" class="focus:ring-indigo-500 focus:border-indigo-500">
-                <option value="funny">Funny 😂</option>
-                <option value="inspiring">Inspiring 💡</option>
-                <option value="professional">Professional 👔</option>
-                <option value="witty">Witty 😉</option>
-                <option value="sincere">Sincere ❤️</option>
-            </select>
-            
-            <button id="generateBtn" class="w-full">Generate Caption</button>
-            
-            <h2 class="text-xl font-semibold mt-6 mb-3">Your Caption:</h2>
-            <div id="captionOutput" class="text-gray-700">Your generated caption will appear here...</div>
-        </div>
-            
-        <div class="price-box">
-            <p class="text-2xl font-bold text-indigo-700 mb-2">Ready to elevate your Instagram?</p>
-            <p class="text-lg text-indigo-800">Get unlimited caption generations for a one-time price!</p>
-            <button class="mt-4">Buy CaptionAI for $9.99</button>
-        </div>
-
-        <footer class="text-center text-gray-500 text-sm mt-8">&copy; 2023 CaptionAI. All rights reserved.</footer>
+        <h1>Caption Genius ✨</h1>
+        <p>Enter keywords, get amazing Instagram captions!</p>
+        <textarea id="keywordsInput" placeholder="e.g., new product launch, summer vibes, coffee art"></textarea>
+        <button id="generateButton">Generate Captions ($4.99)</button>
+        <div class="loading" id="loadingIndicator">Generating...</div>
+        <div id="captionOutput"></div>
     </div>
 
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
-        document.getElementById('generateBtn').addEventListener('click', async () => {
-            const keywords = document.getElementById('keywords').value;
-            const tone = document.getElementById('tone').value;
-            const outputDiv = document.getElementById('captionOutput');
-            outputDiv.textContent = 'Generating...';
+        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLIC_KEY'); // Replace with your actual public key
+        const generateButton = document.getElementById('generateButton');
+        const keywordsInput = document.getElementById('keywordsInput');
+        const captionOutput = document.getElementById('captionOutput');
+        const loadingIndicator = document.getElementById('loadingIndicator');
 
-            // This is a placeholder. In a real app, you'd send this to a backend API.
+        generateButton.addEventListener('click', async () => {
+            if (!keywordsInput.value.trim()) {
+                alert('Please enter some keywords.');
+                return;
+            }
+
+            loadingIndicator.style.display = 'block';
+            captionOutput.style.display = 'none';
+            captionOutput.innerHTML = '';
+            generateButton.disabled = true;
+
             try {
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1500)); 
-                outputDiv.textContent = `Here's your ${tone} caption for: ${keywords}. This is a placeholder! Implement your AI API here.`;
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ keywords: keywordsInput.value })
+                });
+                const session = await response.json();
+
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+
+                if (result.error) {
+                    alert(result.error.message);
+                }
             } catch (error) {
-                outputDiv.textContent = 'Error generating caption. Please try again.';
+                console.error('Error during checkout:', error);
+                alert('Failed to initiate checkout. Please try again.');
+            } finally {
+                loadingIndicator.style.display = 'none';
+                generateButton.disabled = false;
             }
         });
     </script>
