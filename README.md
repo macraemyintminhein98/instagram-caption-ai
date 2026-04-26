@@ -1,15 +1,13 @@
-# InstaCaption AI
+# Caption Spark AI
 
-Generate engaging Instagram captions instantly with AI! Simply provide keywords, pick a tone, and get a creative caption for your posts.
+Generate engaging Instagram captions instantly with AI. Simply input keywords, desired sentiment, and post type, and get a custom caption. Perfect for creators, small businesses, and anyone looking to enhance their Instagram presence.
 
-## Features:
+## Features
+
 - AI-powered caption generation
-- Multiple tone options (funny, inspirational, engaging, etc.)
-- Placeholder for emoji integration
+- Customizable sentiment and post types
+- Fast and easy to use
 
-## How to Use:
-1. Enter keywords related to your post.
-2. Select your desired caption tone.
-3. Click 'Generate Caption' to get instant suggestions.
+## How to Use
 
-This is a demo. A full implementation would connect to a backend with a language model (e.g., OpenAI's GPT) and Stripe for payments.
+Enter your details in the form on the `index.html` page and click 'Generate Caption'. The AI will then create a suitable caption for your Instagram post. (Behind the scenes, this would connect to an AI API and a payment gateway.)
