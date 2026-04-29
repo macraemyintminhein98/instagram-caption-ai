@@ -3,68 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caption Genius</title>
-    <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f2f5; margin: 0; }
-        .container { background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 500px; width: 90%; text-align: center; }
-        h1 { color: #333; margin-bottom: 20px; }
-        textarea { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; min-height: 80px; }
-        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease; }
-        button:hover { background-color: #45a049; }
-        #captionOutput { margin-top: 20px; padding: 15px; background-color: #e9ecef; border-radius: 4px; text-align: left; white-space: pre-wrap; word-wrap: break-word; min-height: 50px; display: none; }
-        .loading { display: none; margin-top: 15px; color: #555; }
-    </style>
+    <title>InstaCaption AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h1>Caption Genius ✨</h1>
-        <p>Enter keywords, get amazing Instagram captions!</p>
-        <textarea id="keywordsInput" placeholder="e.g., new product launch, summer vibes, coffee art"></textarea>
-        <button id="generateButton">Generate Captions ($4.99)</button>
-        <div class="loading" id="loadingIndicator">Generating...</div>
-        <div id="captionOutput"></div>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">InstaCaption AI</h1>
+        <p class="text-center text-gray-600 mb-6">Generate engaging Instagram captions instantly!</p>
+        <div class="mb-4">
+            <label for="keywords" class="block text-gray-700 text-sm font-bold mb-2">Keywords:</label>
+            <input type="text" id="keywords" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="e.g., Summer vibes, coffee, productivity">
+        </div>
+        <div class="mb-6">
+            <label for="tone" class="block text-gray-700 text-sm font-bold mb-2">Tone:</label>
+            <select id="tone" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-3 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                <option>Friendly</option>
+                <option>Professional</option>
+                <option>Witty</option>
+                <option>Inspirational</option>
+            </select>
+        </div>
+        <button id="generateBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline mb-4">
+            Generate Caption
+        </button>
+        <div id="captionOutput" class="bg-gray-50 p-4 rounded text-gray-800 hidden">
+            <h3 class="font-bold mb-2">Your Caption:</h3>
+            <p id="generatedText" class="whitespace-pre-wrap"></p>
+        </div>
+        <p class="text-center text-sm text-gray-500 mt-6">Ready to create amazing captions? <a href="/buy" class="text-blue-500 hover:underline">Get access now!</a></p>
     </div>
-
-    <script src="https://js.stripe.com/v3/"></script>
     <script>
-        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLIC_KEY'); // Replace with your actual public key
-        const generateButton = document.getElementById('generateButton');
-        const keywordsInput = document.getElementById('keywordsInput');
-        const captionOutput = document.getElementById('captionOutput');
-        const loadingIndicator = document.getElementById('loadingIndicator');
+        // Placeholder for future JavaScript logic to integrate with backend API
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const keywords = document.getElementById('keywords').value;
+            const tone = document.getElementById('tone').value;
+            const outputDiv = document.getElementById('captionOutput');
+            const generatedText = document.getElementById('generatedText');
 
-        generateButton.addEventListener('click', async () => {
-            if (!keywordsInput.value.trim()) {
-                alert('Please enter some keywords.');
-                return;
-            }
-
-            loadingIndicator.style.display = 'block';
-            captionOutput.style.display = 'none';
-            captionOutput.innerHTML = '';
-            generateButton.disabled = true;
-
-            try {
-                const response = await fetch('/api/create-checkout-session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ keywords: keywordsInput.value })
-                });
-                const session = await response.json();
-
-                const result = await stripe.redirectToCheckout({
-                    sessionId: session.id
-                });
-
-                if (result.error) {
-                    alert(result.error.message);
-                }
-            } catch (error) {
-                console.error('Error during checkout:', error);
-                alert('Failed to initiate checkout. Please try again.');
-            } finally {
-                loadingIndicator.style.display = 'none';
-                generateButton.disabled = false;
+            if (keywords) {
+                outputDiv.classList.remove('hidden');
+                generatedText.textContent = `Generating a ${tone} caption about '${keywords}'... (API integration coming soon!)`;
+            } else {
+                generatedText.textContent = "Please enter some keywords to generate a caption.";
+                outputDiv.classList.remove('hidden');
             }
         });
     </script>
