@@ -1,26 +1,22 @@
 # InstaCaption AI
 
-InstaCaption AI is a web tool designed to help small business owners, content creators, and influencers generate engaging Instagram captions effortlessly. Simply input your keywords and desired tone, and let our AI create the perfect caption for your post.
+InstaCaption AI is a web-based tool that leverages artificial intelligence to generate engaging Instagram captions. Simply provide keywords and a desired tone, and receive 10 unique, high-quality captions for your social media content.
 
 ## Features
+- AI-powered caption generation.
+- Input keywords for specific content.
+- Select from various tones (funny, inspiring, sales-oriented, etc.).
+- Get 10 captions per single purchase.
 
-*   **AI-Powered Captions**: Utilize advanced language models for creative and relevant suggestions.
-*   **Customizable Tone**: Choose from various tones like friendly, professional, witty, and inspirational.
-*   **Keyword-Driven**: Generate captions tailored to your specific content.
-*   **User-Friendly Interface**: Simple and intuitive design for quick caption generation.
+## How to Use (Conceptual)
+1. Enter relevant keywords about your Instagram post.
+2. Choose the desired tone for your captions.
+3. Click 'Generate Captions' and proceed with a secure payment.
+4. Receive your 10 AI-generated captions instantly!
 
-## Get Started
-
-Visit [instacaption-ai.vercel.app](https://instacaption-ai.vercel.app) (or your deployed URL) to start generating captivating captions for your Instagram posts!
-
-## Pricing
-
-Get instant access for a one-time purchase of $9.99.
-
-## Technologies (Planned)
-
-*   Next.js (Frontend)
-*   Tailwind CSS (Styling)
-*   OpenAI API (GPT-3.5 Turbo for AI generation)
-*   Stripe Checkout (Payment processing)
-*   Vercel (Deployment)
+## Technology Stack (Planned)
+- **Frontend:** Next.js/React (for production, currently a simple HTML/Tailwind demo)
+- **Backend:** Node.js/Serverless Functions (for API integration)
+- **AI API:** OpenAI's GPT-3.5-turbo (or similar)
+- **Payments:** Stripe Checkout
+- **Deployment:** Vercel
